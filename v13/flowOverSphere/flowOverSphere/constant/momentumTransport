@@ -1,0 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      momentumTransport;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType laminar;
+
+// laminar
+// {
+//     model               Giesekus;    // https://doc.cfd.direct/openfoam/user-guide-v12/transport-rheology
+
+//     GiesekusCoeffs
+//     {
+//         nuM             0.002;
+
+//         // Single mode coefficients
+//         lambda          0.03;
+//         alphaG          0.1;
+
+//         // Example 2-mode specification
+//         // modes
+//         // (
+//         //     {
+//         //         lambda          0.01;
+//         //         alphaG          0.05;
+//         //     }
+
+//         //     {
+//         //         lambda          0.04;
+//         //         alphaG          0.2;
+//         //     }
+//         // );
+//     }
+
+//     printCoeffs         on;
+// }
+
+// ************************************************************************* //

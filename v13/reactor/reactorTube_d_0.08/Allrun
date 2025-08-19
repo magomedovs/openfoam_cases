@@ -1,0 +1,17 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+SCRIPT_DIR_NAME="$(basename $(pwd))"
+touch "$SCRIPT_DIR_NAME".foam""
+
+runApplication gmshToFoam FreeCAD_GMSH/reactor_tube.msh
+
+runApplication transformPoints "scale=(1e-2 1e-2 1e-2), Rx=90"
+
+runApplication createPatch -dict system/createPatchDict.1 # -overwrite
+
+runApplication foamRun
+
+#------------------------------------------------------------------------------

@@ -1,0 +1,281 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// block definition for a round tube along z-axis (O-grid topology).
+
+pipeLength          0.7;     // length [m]
+pipeRadius          0.0252;   // radius [m]
+
+inletNozzleLength        0.04;   // [m]
+inletNozzleRadius        0.01;   // [m]
+
+outletNozzleLength        0.04; //0.005 0.04   // [m]
+
+outletNozzleRadius        0.01;   // [m]
+
+outletTubeLength          0.26;   // [m]
+
+convertToMeters           1.;
+
+xcells 4;
+ycells 4;
+
+inletNozzleZcells 8;
+pipeZcells 140;
+outletNozzleZcells 8; //1 8
+outletTubeZcells 52; 
+
+// xcells 6;
+// ycells 10;
+// pipeZcells 400;
+// inletNozzleZcells 16;
+// outletNozzleZcells 16;
+
+xcellsMid $xcells;
+ycellsMid $xcells;
+zcellsMid $pipeZcells;
+
+stretch 1.;     //0.25;
+
+vertices
+(
+    //block0 vertices (top)
+    (#calc "-$pipeRadius * 0.25" #calc "$pipeRadius * 0.25" 0) //0
+    (#calc "-$pipeRadius * 0.707106" #calc "$pipeRadius * 0.707106" 0) //1
+    (#calc "$pipeRadius * 0.707106" #calc "$pipeRadius * 0.707106" 0) //2
+    (#calc "$pipeRadius * 0.25" #calc "$pipeRadius * 0.25" 0) //3
+    (#calc "-$pipeRadius * 0.25" #calc "$pipeRadius * 0.25" $pipeLength) //4
+    (#calc "-$pipeRadius * 0.707106" #calc "$pipeRadius * 0.707106" $pipeLength) //5
+    (#calc "$pipeRadius * 0.707106" #calc "$pipeRadius * 0.707106" $pipeLength) //6
+    (#calc "$pipeRadius * 0.25" #calc "$pipeRadius * 0.25" $pipeLength) //7
+
+    //block1 new vertices (right)
+    (#calc "$pipeRadius * 0.25" #calc "-$pipeRadius * 0.25" 0) //8
+    (#calc "$pipeRadius * 0.707106" #calc "-$pipeRadius * 0.707106" 0) //9
+    (#calc "$pipeRadius * 0.25" #calc "-$pipeRadius * 0.25" $pipeLength) //10
+    (#calc "$pipeRadius * 0.707106" #calc "-$pipeRadius * 0.707106" $pipeLength) //11
+
+    //block3 new vertices (left)
+    (#calc "-$pipeRadius * 0.25" #calc "-$pipeRadius * 0.25" 0) //12
+    (#calc "-$pipeRadius * 0.707106" #calc "-$pipeRadius * 0.707106" 0) //13
+    (#calc "-$pipeRadius * 0.25" #calc "-$pipeRadius * 0.25" $pipeLength) //14
+    (#calc "-$pipeRadius * 0.707106" #calc "-$pipeRadius * 0.707106" $pipeLength) //15
+
+// inletNozzleBlock    
+    //inletNozzleBlock0 vertices (top)
+    (#calc "-$inletNozzleRadius * 0.25" #calc "$inletNozzleRadius * 0.25" #calc "-$inletNozzleLength") //16
+    (#calc "-$inletNozzleRadius * 0.707106" #calc "$inletNozzleRadius * 0.707106" #calc "-$inletNozzleLength") //17
+    (#calc "$inletNozzleRadius * 0.707106" #calc "$inletNozzleRadius * 0.707106" #calc "-$inletNozzleLength") //18
+    (#calc "$inletNozzleRadius * 0.25" #calc "$inletNozzleRadius * 0.25" #calc "-$inletNozzleLength") //19
+
+    //inletNozzleBlock1 new vertices (right)
+    (#calc "$inletNozzleRadius * 0.25" #calc "-$inletNozzleRadius * 0.25" #calc "-$inletNozzleLength") //20
+    (#calc "$inletNozzleRadius * 0.707106" #calc "-$inletNozzleRadius * 0.707106" #calc "-$inletNozzleLength") //21
+
+    //inletNozzleBlock3 new vertices (left)
+    (#calc "-$inletNozzleRadius * 0.25" #calc "-$inletNozzleRadius * 0.25" #calc "-$inletNozzleLength") //22
+    (#calc "-$inletNozzleRadius * 0.707106" #calc "-$inletNozzleRadius * 0.707106" #calc "-$inletNozzleLength") //23
+
+// outletNozzleBlock    
+    //outletNozzleBlock0 vertices (top)
+    (#calc "-$outletNozzleRadius * 0.25" #calc "$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength") //24
+    (#calc "-$outletNozzleRadius * 0.707106" #calc "$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength") //25
+    (#calc "$outletNozzleRadius * 0.707106" #calc "$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength") //26
+    (#calc "$outletNozzleRadius * 0.25" #calc "$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength") //27
+
+    //outletNozzleBlock1 new vertices (right)
+    (#calc "$outletNozzleRadius * 0.25" #calc "-$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength") //28
+    (#calc "$outletNozzleRadius * 0.707106" #calc "-$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength") //29
+
+    //outletNozzleBlock3 new vertices (left)
+    (#calc "-$outletNozzleRadius * 0.25" #calc "-$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength") //30
+    (#calc "-$outletNozzleRadius * 0.707106" #calc "-$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength") //31
+
+// outletTubeBlock    
+    //outletTubeBlock0 vertices (top)
+    (#calc "-$outletNozzleRadius * 0.25" #calc "$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //32
+    (#calc "-$outletNozzleRadius * 0.707106" #calc "$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //33
+    (#calc "$outletNozzleRadius * 0.707106" #calc "$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //34
+    (#calc "$outletNozzleRadius * 0.25" #calc "$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //35
+
+    //outletTubeBlock1 new vertices (right)
+    (#calc "$outletNozzleRadius * 0.25" #calc "-$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //36
+    (#calc "$outletNozzleRadius * 0.707106" #calc "-$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //37
+
+    //outletTubeBlock3 new vertices (left)
+    (#calc "-$outletNozzleRadius * 0.707106" #calc "-$outletNozzleRadius * 0.707106" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //38
+    (#calc "-$outletNozzleRadius * 0.25" #calc "-$outletNozzleRadius * 0.25" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength") //39
+);
+
+blocks
+(
+    //block0    (top)
+    hex (0 3 2 1 4 7 6 5) ($xcells $ycells $pipeZcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (3 8 9 2 7 10 11 6) ($xcells $ycells $pipeZcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (8 12 13 9 10 14 15 11) ($xcells $ycells $pipeZcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (12 0 1 13 14 4 5 15) ($xcells $ycells $pipeZcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (0 12 8 3 4 14 10 7) ($xcellsMid $ycellsMid $zcellsMid) simpleGrading (1 1 1)
+
+// inletNozzleBlock
+    //block0    (top)
+    hex (16 19 18 17 0 3 2 1) ($xcells $ycells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (19 20 21 18 3 8 9 2) ($xcells $ycells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (20 22 23 21 8 12 13 9) ($xcells $ycells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (22 16 17 23 12 0 1 13) ($xcells $ycells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (16 22 20 19 0 12 8 3) ($xcellsMid $ycellsMid $inletNozzleZcells) simpleGrading (1 1 1)
+
+// outletNozzleBlock
+    //block0    (top)
+    hex (4 7 6 5 24 27 26 25) ($xcells $ycells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (7 10 11 6 27 28 29 26) ($xcells $ycells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (10 14 15 11 28 30 31 29) ($xcells $ycells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (14 4 5 15 30 24 25 31) ($xcells $ycells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (4 14 10 7 24 30 28 27) ($xcellsMid $ycellsMid $outletNozzleZcells) simpleGrading (1 1 1)
+
+// outletTubeBlock
+    //block0    (top)
+    hex (24 27 26 25 32 35 34 33) ($xcells $ycells $outletTubeZcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (27 28 29 26 35 36 37 34) ($xcells $ycells $outletTubeZcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (28 30 31 29 36 39 38 37) ($xcells $ycells $outletTubeZcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (30 24 25 31 39 32 33 38) ($xcells $ycells $outletTubeZcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (24 30 28 27 32 39 36 35) ($xcellsMid $ycellsMid $outletTubeZcells) simpleGrading (1 1 1)
+);
+
+edges
+(
+    //block0 arc
+    arc 1 2 (0 $pipeRadius 0)
+    arc 5 6 (0 $pipeRadius $pipeLength)
+    //block1 arc
+    arc 2 9 ($pipeRadius 0 0)
+    arc 6 11 ($pipeRadius 0 $pipeLength)
+    //block2 arc
+    arc 9 13 (0 #calc "-$pipeRadius" 0)
+    arc 11 15 (0 #calc "-$pipeRadius" $pipeLength)
+    //block3 arc
+    arc 1 13 (#calc "-$pipeRadius" 0 0)
+    arc 5 15 (#calc "-$pipeRadius" 0 $pipeLength)
+
+// inletNozzleBlock
+    //block0 arc
+    arc 17 18 (0 $inletNozzleRadius #calc "-$inletNozzleLength")
+    //block1 arc
+    arc 18 21 ($inletNozzleRadius 0 #calc "-$inletNozzleLength")
+    //block2 arc
+    arc 21 23 (0 #calc "-$inletNozzleRadius" #calc "-$inletNozzleLength")
+    //block3 arc
+    arc 17 23 (#calc "-$inletNozzleRadius" 0 #calc "-$inletNozzleLength")
+
+// outletNozzleBlock
+    //block0 arc
+    arc 25 26 (0 $outletNozzleRadius #calc "$pipeLength + $outletNozzleLength")
+    //block1 arc
+    arc 26 29 ($outletNozzleRadius 0 #calc "$pipeLength + $outletNozzleLength")
+    //block2 arc
+    arc 29 31 (0 #calc "-$outletNozzleRadius" #calc "$pipeLength + $outletNozzleLength")
+    //block3 arc
+    arc 25 31 (#calc "-$outletNozzleRadius" 0 #calc "$pipeLength + $outletNozzleLength")
+
+// outletTubeBlock
+    //block0 arc
+    arc 33 34 (0 $outletNozzleRadius #calc "$pipeLength + $outletNozzleLength + $outletTubeLength")
+    //block1 arc
+    arc 34 37 ($outletNozzleRadius 0 #calc "$pipeLength + $outletNozzleLength + $outletTubeLength")
+    //block2 arc
+    arc 37 38 (0 #calc "-$outletNozzleRadius" #calc "$pipeLength + $outletNozzleLength + $outletTubeLength")
+    //block3 arc
+    arc 33 38 (#calc "-$outletNozzleRadius" 0 #calc "$pipeLength + $outletNozzleLength + $outletTubeLength")
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (16 17 18 19)
+            (21 20 19 18)
+            (20 21 23 22)
+            (17 16 22 23)
+            (16 19 20 22)
+        );
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (35 34 33 32)
+            (34 35 36 37)
+            (38 37 36 39)
+            (38 39 32 33)
+            (39 36 35 32)
+        );
+    }
+
+    pipe
+    {
+        type wall;
+        faces
+        (
+            (1 5 6 2)
+            (2 6 11 9)
+            (9 11 15 13)
+            (15 5 1 13)
+
+            //inletNozzleBlock boundary
+            (17 1 2 18)
+            (18 2 9 21)
+            (21 9 13 23)
+            (13 1 17 23)
+
+            //outletNozzleBlock boundary
+            (6 5 25 26)
+            (6 26 29 11)
+            (11 29 31 15)
+            (15 31 25 5)
+
+            //outletTubeBlock boundary
+            (29 26 34 37)
+            (26 25 33 34)
+            (25 31 38 33)
+            (29 31 38 37)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

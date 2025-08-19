@@ -1,0 +1,259 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// block definition for a round tube along z-axis (O-grid topology).
+
+// inletNozzle -> middleTube -> outletNozzle
+
+inletNozzleLength           0.04;   // [m]
+middleTubeLength            1.;     // length [m]
+outletNozzleLength          $inletNozzleLength; //0.04;   // [m]
+
+inletNozzleRadius           0.01;   // [m]
+middleTubeRadius            0.0252;   // radius [m]
+outletNozzleRadius          $inletNozzleRadius; //0.01;   // [m]
+
+convertToMeters           1.;
+
+spatialStep     0.004;
+
+xyCells                 #calc "ceil(2 * $middleTubeRadius / $spatialStep)";
+xCells                  #calc "ceil($xyCells / 3)"; //4;
+yCells                  #calc "ceil(1.5 * $xCells)"; //4;
+
+inletNozzleZcells       #calc "ceil($inletNozzleLength / $spatialStep)"; //8;
+middleTubeZCells        #calc "ceil($middleTubeLength / $spatialStep)"; //100;
+outletNozzleZcells      #calc "ceil($outletNozzleLength / $spatialStep)"; //8;
+
+xCellsMid $xCells;
+yCellsMid $xCells;
+zcellsMid $middleTubeZCells;
+
+stretch 1.;     //0.25;
+
+middleTubeRadius_1      #calc "$middleTubeRadius * 0.25";
+middleTubeRadius_2      #calc "$middleTubeRadius * 0.707106";
+
+mMiddleTubeRadius       #calc "-$middleTubeRadius";
+mMiddleTubeRadius_1     #calc "-$middleTubeRadius * 0.25";
+mMiddleTubeRadius_2     #calc "-$middleTubeRadius * 0.707106";
+
+inletNozzleRadius_1       #calc "$inletNozzleRadius * 0.25";
+inletNozzleRadius_2       #calc "$inletNozzleRadius * 0.707106";
+
+minletNozzleRadius        #calc "-$inletNozzleRadius";
+minletNozzleRadius_1      #calc "-$inletNozzleRadius * 0.25";
+minletNozzleRadius_2      #calc "-$inletNozzleRadius * 0.707106";
+
+outletNozzleRadius_1      #calc "$outletNozzleRadius * 0.25";
+outletNozzleRadius_2      #calc "$outletNozzleRadius * 0.707106";
+
+moutletNozzleRadius       #calc "-$outletNozzleRadius";
+moutletNozzleRadius_1     #calc "-$outletNozzleRadius * 0.25";
+moutletNozzleRadius_2     #calc "-$outletNozzleRadius * 0.707106";
+
+reactorStartZCoord      #calc "-$inletNozzleLength"; //0.;
+
+middleTubeStartZCoord   #calc "$reactorStartZCoord + $inletNozzleLength";
+middleTubeEndZCoord     #calc "$reactorStartZCoord + $inletNozzleLength + $middleTubeLength";
+outletNozzleEndZCoord   #calc "$reactorStartZCoord + $inletNozzleLength + $middleTubeLength + $outletNozzleLength";
+
+vertices
+(
+    //block0 vertices (top)
+    ($mMiddleTubeRadius_1 $middleTubeRadius_1 $middleTubeStartZCoord) //0
+    ($mMiddleTubeRadius_2 $middleTubeRadius_2 $middleTubeStartZCoord) //1
+    ($middleTubeRadius_2 $middleTubeRadius_2 $middleTubeStartZCoord) //2
+    ($middleTubeRadius_1 $middleTubeRadius_1 $middleTubeStartZCoord) //3
+    ($mMiddleTubeRadius_1 $middleTubeRadius_1 $middleTubeEndZCoord) //4
+    ($mMiddleTubeRadius_2 $middleTubeRadius_2 $middleTubeEndZCoord) //5
+    ($middleTubeRadius_2 $middleTubeRadius_2 $middleTubeEndZCoord) //6
+    ($middleTubeRadius_1 $middleTubeRadius_1 $middleTubeEndZCoord) //7
+
+    //block1 new vertices (right)
+    ($middleTubeRadius_1 $mMiddleTubeRadius_1 $middleTubeStartZCoord) //8
+    ($middleTubeRadius_2 $mMiddleTubeRadius_2 $middleTubeStartZCoord) //9
+    ($middleTubeRadius_1 $mMiddleTubeRadius_1 $middleTubeEndZCoord) //10
+    ($middleTubeRadius_2 $mMiddleTubeRadius_2 $middleTubeEndZCoord) //11
+
+    //block3 new vertices (left)
+    ($mMiddleTubeRadius_1 $mMiddleTubeRadius_1 $middleTubeStartZCoord) //12
+    ($mMiddleTubeRadius_2 $mMiddleTubeRadius_2 $middleTubeStartZCoord) //13
+    ($mMiddleTubeRadius_1 $mMiddleTubeRadius_1 $middleTubeEndZCoord) //14
+    ($mMiddleTubeRadius_2 $mMiddleTubeRadius_2 $middleTubeEndZCoord) //15
+
+// inletNozzleBlock    
+    //inletNozzleBlock0 vertices (top)
+    ($minletNozzleRadius_1 $inletNozzleRadius_1 $reactorStartZCoord) //16
+    ($minletNozzleRadius_2 $inletNozzleRadius_2 $reactorStartZCoord) //17
+    ($inletNozzleRadius_2 $inletNozzleRadius_2 $reactorStartZCoord) //18
+    ($inletNozzleRadius_1 $inletNozzleRadius_1 $reactorStartZCoord) //19
+
+    //inletNozzleBlock1 new vertices (right)
+    ($inletNozzleRadius_1 $minletNozzleRadius_1 $reactorStartZCoord) //20
+    ($inletNozzleRadius_2 $minletNozzleRadius_2 $reactorStartZCoord) //21
+
+    //inletNozzleBlock3 new vertices (left)
+    ($minletNozzleRadius_1 $minletNozzleRadius_1 $reactorStartZCoord) //22
+    ($minletNozzleRadius_2 $minletNozzleRadius_2 $reactorStartZCoord) //23
+
+// outletNozzleBlock    
+    //outletNozzleBlock0 vertices (top)
+    ($moutletNozzleRadius_1 $outletNozzleRadius_1 $outletNozzleEndZCoord) //24
+    ($moutletNozzleRadius_2 $outletNozzleRadius_2 $outletNozzleEndZCoord) //25
+    ($outletNozzleRadius_2 $outletNozzleRadius_2 $outletNozzleEndZCoord) //26
+    ($outletNozzleRadius_1 $outletNozzleRadius_1 $outletNozzleEndZCoord) //27
+
+    //outletNozzleBlock1 new vertices (right)
+    ($outletNozzleRadius_1 $moutletNozzleRadius_1 $outletNozzleEndZCoord) //28
+    ($outletNozzleRadius_2 $moutletNozzleRadius_2 $outletNozzleEndZCoord) //29
+
+    //outletNozzleBlock3 new vertices (left)
+    ($moutletNozzleRadius_1 $moutletNozzleRadius_1 $outletNozzleEndZCoord) //30
+    ($moutletNozzleRadius_2 $moutletNozzleRadius_2 $outletNozzleEndZCoord) //31
+);
+
+blocks
+(
+    //block0    (top)
+    hex (0 3 2 1 4 7 6 5) ($xCells $yCells $middleTubeZCells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (3 8 9 2 7 10 11 6) ($xCells $yCells $middleTubeZCells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (8 12 13 9 10 14 15 11) ($xCells $yCells $middleTubeZCells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (12 0 1 13 14 4 5 15) ($xCells $yCells $middleTubeZCells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (0 12 8 3 4 14 10 7) ($xCellsMid $yCellsMid $zcellsMid) simpleGrading (1 1 1)
+
+// inletNozzleBlock
+    //block0    (top)
+    hex (16 19 18 17 0 3 2 1) ($xCells $yCells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (19 20 21 18 3 8 9 2) ($xCells $yCells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (20 22 23 21 8 12 13 9) ($xCells $yCells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (22 16 17 23 12 0 1 13) ($xCells $yCells $inletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (16 22 20 19 0 12 8 3) ($xCellsMid $yCellsMid $inletNozzleZcells) simpleGrading (1 1 1)
+
+// outletNozzleBlock
+    //block0    (top)
+    hex (4 7 6 5 24 27 26 25) ($xCells $yCells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (7 10 11 6 27 28 29 26) ($xCells $yCells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (10 14 15 11 28 30 31 29) ($xCells $yCells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (14 4 5 15 30 24 25 31) ($xCells $yCells $outletNozzleZcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (4 14 10 7 24 30 28 27) ($xCellsMid $yCellsMid $outletNozzleZcells) simpleGrading (1 1 1)
+);
+
+edges
+(
+    //block0 arc
+    arc 1 2 (0 $middleTubeRadius $middleTubeStartZCoord)
+    arc 5 6 (0 $middleTubeRadius $middleTubeEndZCoord)
+    //block1 arc
+    arc 2 9 ($middleTubeRadius 0 $middleTubeStartZCoord)
+    arc 6 11 ($middleTubeRadius 0 $middleTubeEndZCoord)
+    //block2 arc
+    arc 9 13 (0 $mMiddleTubeRadius $middleTubeStartZCoord)
+    arc 11 15 (0 $mMiddleTubeRadius $middleTubeEndZCoord)
+    //block3 arc
+    arc 1 13 ($mMiddleTubeRadius 0 $middleTubeStartZCoord)
+    arc 5 15 ($mMiddleTubeRadius 0 $middleTubeEndZCoord)
+
+// inletNozzleBlock
+    //block0 arc
+    arc 17 18 (0 $inletNozzleRadius $reactorStartZCoord)
+    //block1 arc
+    arc 18 21 ($inletNozzleRadius 0 $reactorStartZCoord)
+    //block2 arc
+    arc 21 23 (0 $minletNozzleRadius $reactorStartZCoord)
+    //block3 arc
+    arc 17 23 ($minletNozzleRadius 0 $reactorStartZCoord)
+
+// outletNozzleBlock
+    //block0 arc
+    arc 25 26 (0 $outletNozzleRadius $outletNozzleEndZCoord)
+    //block1 arc
+    arc 26 29 ($outletNozzleRadius 0 $outletNozzleEndZCoord)
+    //block2 arc
+    arc 29 31 (0 $moutletNozzleRadius $outletNozzleEndZCoord)
+    //block3 arc
+    arc 25 31 ($moutletNozzleRadius 0 $outletNozzleEndZCoord)
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (16 17 18 19)
+            (21 20 19 18)
+            (20 21 23 22)
+            (17 16 22 23)
+            (16 19 20 22)
+        );
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (27 26 25 24)
+            (26 27 28 29)
+            (31 29 28 30)
+            (31 30 24 25)
+            (30 28 27 24)
+        );
+    }
+
+    pipe
+    {
+        type wall;
+        faces
+        (
+            (1 5 6 2)
+            (2 6 11 9)
+            (9 11 15 13)
+            (15 5 1 13)
+
+            //inletNozzleBlock boundary
+            (17 1 2 18)
+            (18 2 9 21)
+            (21 9 13 23)
+            (13 1 17 23)
+
+            //outletNozzleBlock boundary
+            (6 5 25 26)
+            (6 26 29 11)
+            (11 29 31 15)
+            (15 31 25 5)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

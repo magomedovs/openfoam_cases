@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+
+    div(phi,U)      Gauss linearUpwindV grad(U); //upwind; limitedLinearV 1;
+    div(phiv,p)     Gauss limitedLinear 1; //upwind;
+
+    energy          Gauss limitedLinear 1; //upwind;
+    
+    div(phi,h)      $energy;
+    div(phi,e)      $energy;
+    div(phi,K)      Gauss linear;
+    div(phi,Ekp)    Gauss linear;
+
+
+    // div(phi,U)      Gauss upwind; //linearUpwindV grad(U); //upwind; limitedLinearV 1;
+    // div(phiv,p)     Gauss upwind; //limitedLinear 1; //upwind;
+
+    // energy          Gauss upwind; //limitedLinear 1; //upwind;
+
+    // div(phi,h)      $energy;
+    // div(phi,e)      $energy;
+    // div(phi,K)      Gauss upwind;
+    // div(phi,Ekp)    Gauss upwind;
+    
+
+    turbulence      Gauss upwind;
+    div(phi,k)      $turbulence;
+    div(phi,epsilon) $turbulence;
+    div(phi,R)      $turbulence;
+    div(R)          Gauss linear;
+
+    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+}
+
+
+
+// ************************************************************************* //

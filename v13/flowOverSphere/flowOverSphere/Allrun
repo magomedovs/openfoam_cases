@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication blockMesh -dict system/blockMeshDict.1
+
+touch flowOverSphere.foam
+
+runApplication snappyHexMesh -dict snappyHexMeshDict.1 -overwrite
+
+runApplication createPatch -dict system/createPatchDict.1 -overwrite
+
+runApplication $(getApplication)
+
+#------------------------------------------------------------------------------

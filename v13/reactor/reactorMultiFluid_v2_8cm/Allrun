@@ -1,0 +1,22 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication blockMesh
+
+touch reactorMultiFluid_v2.foam
+
+# runApplication setFields
+
+## Sequential
+# runApplication $(getApplication)
+
+## Parallel
+runApplication decomposePar
+
+runParallel $(getApplication)
+
+runApplication reconstructPar
+
+#------------------------------------------------------------------------------
