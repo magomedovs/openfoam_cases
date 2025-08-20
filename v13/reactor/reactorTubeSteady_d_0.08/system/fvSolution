@@ -38,6 +38,16 @@ solvers
         relTol          0.1;
         maxIter         20;
     }
+
+    "Ii.*"
+    {
+        solver              GAMG;
+        tolerance           1e-8;
+        relTol              0;
+        smoother            symGaussSeidel;
+        maxIter             3;
+        nPostSweeps         1;
+    }
 }
 
 PIMPLE
