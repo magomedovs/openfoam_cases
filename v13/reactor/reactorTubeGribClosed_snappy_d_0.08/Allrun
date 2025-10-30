@@ -1,0 +1,20 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+SCRIPT_DIR_NAME="$(basename $(pwd))"
+touch "$SCRIPT_DIR_NAME".foam""
+
+# runApplication surfaceAutoPatch constant/geometry/tube_grib_closed.stl constant/geometry/tube_grib_closed_out.stl 130
+
+runApplication blockMesh
+runApplication surfaceFeatures
+runApplication snappyHexMesh
+runApplication createPatch
+
+runApplication transformPoints "translate=(0 0 -0.04)"
+
+runApplication foamRun
+
+#------------------------------------------------------------------------------

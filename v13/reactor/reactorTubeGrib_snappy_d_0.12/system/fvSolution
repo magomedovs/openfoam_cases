@@ -1,0 +1,140 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "rho.*"
+    {
+        solver          diagonal;
+    }
+
+    // "(rho|rhoFinal)"
+    // {
+    //     solver              PCG;
+    //     preconditioner      DIC;
+    //     tolerance           1e-8;
+    //     relTol              0;
+    // };
+    
+    p_rgh
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        // solver          GAMG;
+        // smoother        DICGaussSeidel;
+        tolerance       1e-8;
+        relTol          0.01;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0; //1e-8;//0;
+    }
+
+    Phi
+    {
+        $p_rgh;
+    }
+
+    "(U|k|omega)"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+
+        tolerance       1e-6;
+        relTol          0.1;
+    }
+
+    "(U|k|omega)Final"
+    {
+        $U;
+        relTol          0;
+    }
+
+    "(Yi|H2O).*"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+
+        tolerance       1e-6;
+        relTol          0;
+    }
+
+    h
+    {
+        $Yi;
+        relTol          0.1;
+    }
+
+    hFinal
+    {
+        $Yi;
+    }
+
+    "Ii.*"
+    {
+        solver              GAMG;
+        tolerance           1e-8;
+        relTol              0;
+        smoother            symGaussSeidel;
+        maxIter             3;
+        nPostSweeps         1;
+    }
+
+    // ???
+    // Ii
+    // {
+    //     solver              GAMG;
+    //     tolerance           1e-4;
+    //     relTol              0;
+    //     smoother            symGaussSeidel;
+    //     cacheAgglomeration  true;
+    //     nCellsInCoarsestLevel   10;
+    //     agglomerator        faceAreaPair;
+    //     mergeLevels         1;
+    //     maxIter             5;
+    //     nPreSweeps          0;
+    //     nPostSweeps         1;
+    // }
+
+}
+
+PIMPLE
+{
+    momentumPredictor yes;
+    nOuterCorrectors 1;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 2;
+    pRefCell        0;
+    pRefValue       101325;
+
+    // hydrostaticInitialisation yes;
+    // nHydrostaticCorrectors 5;
+}
+
+relaxationFactors
+{
+    equations
+    {
+        ".*"        0.8;
+        // "(U|k).*"                   1;
+        // "(CH4|O2|H2O|CO2|h).*"      1;
+    }
+}
+
+
+// ************************************************************************* //

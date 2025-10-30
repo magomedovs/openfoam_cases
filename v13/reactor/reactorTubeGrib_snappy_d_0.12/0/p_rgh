@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 101325;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedFluxPressure;
+        rho             rho;
+        value           $internalField;
+
+        // type                prghPressure;
+        // p                   $internalField;
+        // value               $internalField;
+
+        // type            prghTotalPressure;
+        // p0              $internalField;
+        // value           $internalField;
+
+        // type            totalPressure;
+        // rho             rho;
+        // p0              $internalField;
+        // value           $internalField;
+
+        // For gravity (0 0 -9.81)
+        // type            fixedValue;
+        // value           $internalField;
+
+        // type            zeroGradient;
+    }
+
+    outlet
+    {
+        // type            waveTransmissive;  // Non-reflective for compressible flow
+        // gamma           1.4;              // Heat capacity ratio (Cp/Cv)
+        // field           p_rgh;            // Act on p_rgh
+        // value           $internalField;        // Reference value (p_rgh = p - ρgh)
+        
+        // type            totalPressure;
+        // p0              $internalField;
+        // value           $internalField;
+        // rho             thermo:rho;
+        // psi             thermo:psi;
+        // gamma           1.4;
+        
+        // type            fixedValue;
+        // value           $internalField;
+
+        type            prghPressure;
+        p               $internalField;
+        value           $internalField;
+
+        // type            prghTotalPressure;
+        // p0              $internalField;
+        // rho             rho;
+        // value           $internalField;
+
+        // type               prghTotalHydrostaticPressure;
+        // value              $internalField;
+        // ph_rgh             p_rgh;
+
+        // type            fixedFluxPressure;
+        // rho             rho;
+        // value           $internalField;
+        
+        // For gravity (0 0 -9.81)
+        // type            zeroGradient;
+    }
+
+    sideWalls
+    {
+        // type            zeroGradient;
+
+        type            fixedFluxPressure;
+        rho             rho;
+        value           $internalField;
+    }
+}
+
+
+// ************************************************************************* //
