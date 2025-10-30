@@ -1,0 +1,14 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+runApplication blockMesh            # execute the code from blockMeshDict
+runApplication setFields            # execute the code from setFieldsDict to set initial conditions (convenient for some simple IC)
+
+runApplication $(getApplication)    # this will call "foamRun" command
+
+touch advection-diffusionOF13.foam  # create empty dummy file with ".foam" extension for access from ParaView
+
+#------------------------------------------------------------------------------
