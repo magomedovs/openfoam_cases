@@ -1,0 +1,100 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+// internalField   uniform 0;
+
+internalField #codeStream
+{
+    code
+    #{        
+        const IOdictionary& d       = static_cast<const IOdictionary&>(dict);
+        const fvMesh&       mesh    = refCast<const fvMesh>(d.db());
+        
+        scalarField fld(mesh.nCells(), 0);
+
+        const vector centerVec(1., 0., 0);
+        const scalar radius(0.4);
+        auto InitCondition = [=](const vector r) {
+            if (mag(r - centerVec) <= radius)
+            {
+                return 10;
+            }
+            else
+            {
+                return 0;
+            }
+        };
+
+        forAll(fld, i)
+        {
+            // const scalar x = mesh.C()[i][0];
+            // const scalar y = mesh.C()[i][1];
+
+            fld[i] = InitCondition(mesh.C()[i]);
+        }
+
+        writeEntry(os, "", fld);
+    #};
+
+    codeInclude
+    #{
+        #include "volFields.H"
+    #};
+
+    codeOptions
+    #{
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+
+    codeLibs
+    #{
+        -lmeshTools \
+        -lfiniteVolume
+    #};
+};
+
+
+boundaryField
+{
+    left
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+    right
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+    top
+    {
+        type            zeroGradient;
+    }
+    bottom
+    {
+        type            zeroGradient;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //
