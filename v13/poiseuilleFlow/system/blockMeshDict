@@ -1,0 +1,133 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// block definition for a round tube along z-axis (O-grid topology).
+
+convertToMeters      1;
+
+zEnd                 10;
+
+xcells 4;
+ycells 5;
+zcells 200; //250;
+
+xcellsMid $xcells;
+ycellsMid $xcells;
+zcellsMid $zcells;
+
+stretch 0.25;     //0.25;
+
+vertices
+(
+    //block0 vertices (top)
+    (-0.25 0.25 0) //0
+    (-0.707106 0.707106 0) //1
+    (0.707106 0.707106 0) //2
+    (0.25 0.25 0) //3
+    (-0.25 0.25 $zEnd) //4
+    (-0.707106 0.707106 $zEnd) //5
+    (0.707106 0.707106 $zEnd) //6
+    (0.25 0.25 $zEnd) //7
+
+    //block1 new vertices (right)
+    (0.25 -0.25 0) //8
+    (0.707106 -0.707106 0) //9
+    (0.25 -0.25 $zEnd) //10
+    (0.707106 -0.707106 $zEnd) //11
+
+    //block3 new vertices (left)
+    (-0.25 -0.25 0) //12
+    (-0.707106 -0.707106 0) //13
+    (-0.25 -0.25 $zEnd) //14
+    (-0.707106 -0.707106 $zEnd) //15
+);
+
+blocks
+(
+    //block0    (top)
+    hex (0 3 2 1 4 7 6 5) ($xcells $ycells $zcells) simpleGrading (1 $stretch 1)
+    //block1    (right)
+    hex (3 8 9 2 7 10 11 6) ($xcells $ycells $zcells) simpleGrading (1 $stretch 1)
+    //block2    (bottom)
+    hex (8 12 13 9 10 14 15 11) ($xcells $ycells $zcells) simpleGrading (1 $stretch 1)
+    //block3    (left)
+    hex (12 0 1 13 14 4 5 15) ($xcells $ycells $zcells) simpleGrading (1 $stretch 1)
+    //block4    (middle)
+    hex (0 12 8 3 4 14 10 7) ($xcellsMid $ycellsMid $zcellsMid) simpleGrading (1 1 1)
+);
+
+edges
+(
+    //block0 arc
+    arc 1 2 (0 1 0)
+    arc 5 6 (0 1 $zEnd)
+    //block1 arc
+    arc 2 9 (1 0 0)
+    arc 6 11 (1 0 $zEnd)
+    //block2 arc
+    arc 9 13 (0 -1 0)
+    arc 11 15 (0 -1 $zEnd)
+    //block3 arc
+    arc 1 13 (-1 0 0)
+    arc 5 15 (-1 0 $zEnd)
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (0 1 2 3)
+            (9 8 3 2)
+            (8 9 13 12)
+            (1 0 12 13)
+            (0 3 8 12)
+        );
+    }
+
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (7 6 5 4)
+            (6 7 10 11)
+            (15 11 10 14)
+            (15 14 4 5)
+            (14 10 7 4)
+        );
+    }
+
+    pipe
+    {
+        type wall;
+        faces
+        (
+            (1 5 6 2)
+            (2 6 11 9)
+            (9 11 15 13)
+            (15 5 1 13)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
