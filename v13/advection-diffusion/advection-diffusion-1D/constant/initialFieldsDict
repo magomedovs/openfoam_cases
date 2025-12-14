@@ -1,0 +1,30 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      initialFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+Tinit
+{
+    type            table;
+    format          csv;        // Input format
+    nHeaderLine     0;          // Number of header lines
+    columns         (0 1);      // Column indices
+    separator       " ";        // Optional (defaults to ",")
+    mergeSeparators yes;        // Merge multiple separators
+    outOfBounds     clamp;      // Optional out-of-bounds handling
+    file            "initialFieldsData/initTemperature";
+    interpolationScheme linear;     // Optional interpolation scheme
+}
+
+// ************************************************************************* //

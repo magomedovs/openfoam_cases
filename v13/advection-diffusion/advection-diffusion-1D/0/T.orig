@@ -16,7 +16,70 @@ FoamFile
 
 dimensions      [0 0 0 1 0 0 0];
 
-internalField   uniform 0;
+// internalField   uniform 0;
+
+internalField #codeStream
+{
+    code
+    #{        
+        const IOdictionary& d       = static_cast<const IOdictionary&>(dict);
+        const fvMesh&       mesh    = refCast<const fvMesh>(d.db());
+        
+        Info<< "Reading initialFieldsDict\n" << endl;
+        IOdictionary myCustomDict
+        (
+            IOobject
+            (
+                "initialFieldsDict",
+                mesh.time().constant(), //"constant",
+                mesh,
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+            )
+        );
+
+        const dictionary& dataDict = myCustomDict.subDict("Tinit");
+        
+        const fileName file_name = dataDict.lookup<fileName>("file");
+        Info<< "Reading " << file_name << " file ...\n" << endl; 
+        
+        autoPtr<Function1<scalar>> InitCondition(Function1<scalar>::New("type", {unitAny, unitAny}, dataDict));
+        // autoPtr<Function1<scalar>> InitCondition(Function1<scalar>::New("type", {dimLength, dimTemperature}, dataDict));
+
+        // const scalar x1(0.37774);
+        // const scalar x2(0.61);
+        // Info<< "Value F("<<x1<<") = " << InitCondition->value(x1) << endl;
+        // Info<< "Value F("<<x2<<") = " << InitCondition->value(x2) << endl;
+        
+        scalarField fld(mesh.nCells(), 0);
+        forAll(fld, i)
+        {
+            // const scalar y = mesh.C()[i][1];
+            const scalar x = mesh.C()[i][0];
+            fld[i] = InitCondition->value(x);
+        }
+
+        writeEntry(os, "", fld);
+    #};
+
+    codeInclude
+    #{
+        #include "volFields.H"
+        #include "Function1.H"
+    #};
+
+    codeOptions
+    #{
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+
+    codeLibs
+    #{
+        -lmeshTools \
+        -lfiniteVolume
+    #};
+};
 
 boundaryField
 {

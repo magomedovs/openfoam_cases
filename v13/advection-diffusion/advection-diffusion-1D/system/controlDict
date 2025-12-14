@@ -26,9 +26,9 @@ subSolverTime   0;
 
 stopAt          endTime;
 
-endTime         4;
+endTime         7;
 
-deltaT          0.001;
+deltaT          0.01;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -38,7 +38,7 @@ deltaT          0.001;
 
 writeControl    runTime; // adjustableRunTime
 
-writeInterval   1;
+writeInterval   1e-1;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
