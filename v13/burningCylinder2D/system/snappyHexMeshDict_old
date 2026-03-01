@@ -28,30 +28,31 @@ geometry
         file    "surfacemesh.stl";
     }
 
-    refinementBox
+/*
+    selection1.stl
     {
-        // type searchableBox;
-        type box;
-        min (-0.03 -0.04 -1e5);
-        max ( 0.08  0.04  1e5);
+        type triSurfaceMesh;
+        name selection1;
     }
+*/
 
-    refinementBoxYTop
-    {
-        // type searchableBox;
-        type box;
-        min ( 0.01  0.015  -1e5 );
-        max ( 0.20  0.055   1e5 );
-    }
+    // refinementBox
+    // {
+    //     type searchableBox;
+    //     // min (-2 -2 -2);
+    //     // max (2 2 2);
+    //     min (-0.02 -0.02 -0.02);
+    //     max (0.02 0.02 0.02);
+    // }
 
-    refinementBoxYBottom
+/*
+    refinementBox1
     {
-        // type searchableBox;
-        type box;
-        min ( 0.01 -0.055  -1e5 );
-        max ( 0.20 -0.015   1e5 );
+        type searchableBox;
+        min (-2 -2 -2);
+        max (2 2 2);
     }
-    
+*/
 
 };
 
@@ -79,8 +80,8 @@ castellatedMeshControls
     (
         {
             file "surfacemesh.eMesh";
-            // level 0;
-            level 4;
+            level 0;
+            //level 4;
         }
     );
 
@@ -104,8 +105,8 @@ castellatedMeshControls
     }
 
     // Feature angle:
-    resolveFeatureAngle 30;		//recommended
-    // resolveFeatureAngle 60;		//To avoid too much refinement with curvature		
+    //resolveFeatureAngle 30;		//recommended
+      resolveFeatureAngle 60;		//To avoid too much refinement with curvature		
 
     planarAngle 30;
 
@@ -121,18 +122,6 @@ castellatedMeshControls
 
             //mode distance;        	// 
             //levels ((0.1 1));     	//first number distance normal to the surface in both direction
-        }
-
-        refinementBoxYTop
-        {
-            mode inside;        	// inside - outside
-            levels ((1 1));     	// min max
-        }
-
-        refinementBoxYBottom
-        {
-            mode inside;        	// inside - outside
-            levels ((1 1));     	// min max
         }
     }
 

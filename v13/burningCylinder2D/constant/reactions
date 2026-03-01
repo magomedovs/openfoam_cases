@@ -5,14 +5,6 @@
     \\  /    A nd           | Version:  13
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
-Reference:
-    Bui-Pham, M. N. (1992).
-    Studies in structures of lam inar hydrocarbon flames.
-    PhD Thesis, University of California, San Diego
-
-Notes:
-    This mechanism was developed for simulating this exact counter-flow flame
-    configuration. It should not be considered general-purpose.
 
 \*---------------------------------------------------------------------------*/
 

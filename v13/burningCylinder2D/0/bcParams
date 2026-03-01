@@ -9,5 +9,5 @@
 waveTransmissiveParams
 {
     gamma           1.4;
-    lInf            1e2;
+    lInf            1e1;
 }

@@ -29,26 +29,26 @@ boundaryField
 
     outlet
     {
-        // type            waveTransmissive;
-        // fieldInf        300;
-        // $waveTransmissiveParams;
-
-        type            advective;
+        type            waveTransmissive;
         fieldInf        300;
         $waveTransmissiveParams;
+
+        // type            advective;  // this gives problem when flame approaches a boundary
+        // fieldInf        300;
+        // $waveTransmissiveParams;
     }
 
     wallsY
     {
         // type            zeroGradient;
 
-        // type            waveTransmissive;
-        // fieldInf        300;
-        // $waveTransmissiveParams;
-
-        type            advective;
+        type            waveTransmissive;
         fieldInf        300;
         $waveTransmissiveParams;
+
+        // type            advective;  // this gives problem when flame approaches a boundary
+        // fieldInf        300;
+        // $waveTransmissiveParams;
     }
 
     cylinder
