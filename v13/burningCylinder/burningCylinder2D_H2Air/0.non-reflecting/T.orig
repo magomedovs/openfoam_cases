@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300;
+
+boundaryField
+{
+    #include "${FOAM_CASE}/0/bcParams"
+
+    inlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    outlet
+    {
+        type            waveTransmissive;
+        fieldInf        300;
+        $waveTransmissiveParams;
+
+        // type            advective;  // this gives problem when flame approaches a boundary
+        // fieldInf        300;
+        // $waveTransmissiveParams;
+    }
+
+    wallsY
+    {
+        // type            zeroGradient;
+
+        type            waveTransmissive;
+        fieldInf        300;
+        $waveTransmissiveParams;
+
+        // type            advective;  // this gives problem when flame approaches a boundary
+        // fieldInf        300;
+        // $waveTransmissiveParams;
+    }
+
+    cylinder
+    {
+        type            fixedValue;
+        value           uniform 600;
+    }
+
+    wallsZ
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //
