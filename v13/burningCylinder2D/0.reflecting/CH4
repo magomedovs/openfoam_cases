@@ -1,0 +1,62 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      CH4;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [];
+
+internalField   uniform 0.05;
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+    #include "${FOAM_CASE}/0/bcParams"
+
+    inlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+
+        // type            waveTransmissive;
+        // fieldInf        0.05;
+        // $waveTransmissiveParams;
+    }
+
+    wallsY
+    {
+        type            zeroGradient;
+
+        // type            waveTransmissive;
+        // fieldInf        0.05;
+        // $waveTransmissiveParams;
+    }
+
+    cylinder
+    {
+        type            zeroGradient;
+    }
+
+    wallsZ
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

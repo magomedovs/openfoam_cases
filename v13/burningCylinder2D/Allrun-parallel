@@ -6,9 +6,12 @@ cd ${0%/*} || exit 1    # run from this directory
 
 paraFoam -builtin -touch
 
+# cp -r 0.reflecting 0/
+cp -r 0.non-reflecting 0/
+
 runApplication blockMesh
 
-runApplication surfaceConvert -scale 0.01 constant/geometry/surfacemesh_ref.stl constant/geometry/surfacemesh.stl
+runApplication surfaceConvert -scale 0.005 constant/geometry/surfacemesh_ref.stl constant/geometry/surfacemesh.stl
 
 runApplication surfaceFeatures
 

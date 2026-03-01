@@ -32,24 +32,24 @@ geometry
     {
         // type searchableBox;
         type box;
-        min (-0.03 -0.04 -1e5);
-        max ( 0.08  0.04  1e5);
+        min (-0.01 -0.015 -1e5);
+        max ( 0.03  0.015  1e5);
     }
 
     refinementBoxYTop
     {
         // type searchableBox;
         type box;
-        min ( 0.01  0.015  -1e5 );
-        max ( 0.20  0.055   1e5 );
+        min ( 0.005  0.006  -1e5 );
+        max ( 1e5    1e5     1e5 );
     }
 
     refinementBoxYBottom
     {
         // type searchableBox;
         type box;
-        min ( 0.01 -0.055  -1e5 );
-        max ( 0.20 -0.015   1e5 );
+        min ( 0.005  -1e5   -1e5 );
+        max ( 1e5    -0.006  1e5 );
     }
     
 
@@ -140,7 +140,8 @@ castellatedMeshControls
     // ~~~~~~~~~~~~~~
 
     // locationInMesh (4.0 0.1 0.1); 
-    locationInMesh (0.0217 0.0217 0.000153); 
+    // locationInMesh (0.0217 0.0217 0.000153); 
+    locationInMesh (0.0217 0.01617 0.000153); 
 
     allowFreeStandingZoneFaces true;
 

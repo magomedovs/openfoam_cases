@@ -22,35 +22,35 @@ convertToMeters 1;
 // zmin -0.001;
 // zmax  0.001;
 
-xmin -0.04;
-xmax  0.10;
-ymin -0.05;
-ymax  0.05;
-zmin -0.001;
-zmax  0.001;
-
-// xmin -0.02;
-// xmax  0.05;
-// ymin -0.03;
-// ymax  0.03;
+// xmin -0.04;
+// xmax  0.10;
+// ymin -0.05;
+// ymax  0.05;
 // zmin -0.001;
 // zmax  0.001;
+
+xmin -0.02;
+xmax  0.05;
+ymin -0.03;
+ymax  0.03;
+zmin -0.001;
+zmax  0.001;
 
 // xcells 30;
 // ycells 20;
 zcells 1;
 
-dx 0.001;
-dy 0.001;
+dx 0.0002;
+dy 0.0002;
 // dz 0.5;
 
 lx #calc "$xmax - $xmin";
 ly #calc "$ymax - $ymin";
 // lz #calc "$zmax - $zmin";
 
-xcells #calc "mag(($lx)/($dx))";
-ycells #calc "mag(($ly)/($dy))";
-// zcells #calc "mag(($lz)/($dz))";
+xcells #calc "round(mag(($lx)/($dx)))";
+ycells #calc "round(mag(($ly)/($dy)))";
+// zcells #calc "round(mag(($lz)/($dz)))";
 
 vertices        
 (
