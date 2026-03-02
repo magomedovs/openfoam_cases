@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [];
 
-Y_O2_init       0.10136895031176557;
+Y_O2_init       0.22963;
 internalField   uniform $Y_O2_init;
 
 boundaryField

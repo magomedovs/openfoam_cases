@@ -16,8 +16,8 @@ FoamFile
 
 dimensions      [];
 
-Y_AR_init       0.8858584631105191;
-internalField   uniform  $Y_AR_init;
+Y_N2_init       0.7559;
+internalField   uniform  $Y_N2_init;
 
 boundaryField
 {
@@ -35,7 +35,7 @@ boundaryField
         type            zeroGradient;
         
         // type            waveTransmissive;
-        // fieldInf        $Y_AR_init;
+        // fieldInf        $Y_N2_init;
         // $waveTransmissiveParams;
     }
 
@@ -44,7 +44,7 @@ boundaryField
         type            zeroGradient;
 
         // type            waveTransmissive;
-        // fieldInf        $Y_AR_init;
+        // fieldInf        $Y_N2_init;
         // $waveTransmissiveParams;
     }
 

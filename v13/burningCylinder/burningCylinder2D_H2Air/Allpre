@@ -4,6 +4,6 @@ cd "${0%/*}" || exit                                # Run from this directory
 #------------------------------------------------------------------------------
 
 runApplication chemkinToFoam \
-               chemkin/chem.inp chemkin/therm.dat chemkin/transportProperties \
+               chemkin/chem_h2air.inp chemkin/thermo_h2air.dat chemkin/transportProperties \
                constant/reactions constant/thermo
 #------------------------------------------------------------------------------

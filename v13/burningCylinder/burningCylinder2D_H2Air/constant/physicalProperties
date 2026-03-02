@@ -25,8 +25,8 @@ thermoType
     specie          specie;
 }
 
-defaultSpecie AR;
-// species         9(H2 O2 H O OH HO2 H2O2 H2O AR);
+defaultSpecie N2;
+
 #include "thermo"
 
 // ************************************************************************* //

@@ -14,21 +14,84 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-".*"
-{
-    transport
-    {
-        As 1.512e-06;
-        Ts 120.;
-    }
-}
-
 "H2"
 {
     transport
     {
-        As 6.362e-07;
-        Ts 72.;
+        As 1.67e-06;
+        Ts 97.;
+    }
+}
+
+"H"
+{
+    transport
+    {
+        As 1.34e-06;
+        Ts 100.;
+    }
+}
+
+"O2"
+{
+    transport
+    {
+        As 2.27e-06;
+        Ts 139.;
+    }
+}
+
+"OH"
+{
+    transport
+    {
+        As 2.70e-06;
+        Ts 230.;
+    }
+}
+
+"O"
+{
+    transport
+    {
+        As 3.76e-06;
+        Ts 85.;
+    }
+}
+
+"H2O"
+{
+    transport
+    {
+        As 2.67e-06;
+        Ts 1700.;
+    }
+}
+
+"HO2"
+{
+    transport
+    {
+        As 3.50e-06;
+        Ts 100.;
+    }
+}
+
+"H2O2"
+{
+    transport
+    {
+        As 3.50e-06;
+        Ts 500.;
+    }
+}
+
+"N2"
+{
+    transport
+    {
+        As 2.27e-06;
+        Ts 111.;
     }
 }
 

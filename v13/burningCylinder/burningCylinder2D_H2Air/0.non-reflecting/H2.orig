@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [];
 
-Y_H2_init       0.012772586577715456;
+Y_H2_init       0.014468;
 internalField   uniform $Y_H2_init;
 
 boundaryField
