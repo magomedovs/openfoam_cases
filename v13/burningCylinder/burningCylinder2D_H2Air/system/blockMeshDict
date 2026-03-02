@@ -40,8 +40,8 @@ zmax  0.001;
 // ycells 20;
 zcells 1;
 
-dx 0.0002;
-dy 0.0002;
+dx 0.0005;
+dy 0.0005;
 // dz 0.5;
 
 lx #calc "$xmax - $xmin";

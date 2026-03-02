@@ -13,6 +13,8 @@ cp -r 0.non-reflecting 0/
 
 ./Allmesh
 
+# runApplication setFields
+
 runApplication foamRun
 
 # ----------------------------------------------------------------- end-of-file

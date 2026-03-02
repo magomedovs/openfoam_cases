@@ -54,7 +54,7 @@ boundaryField
     cylinder
     {
         type            fixedValue;
-        value           uniform 600;
+        value           uniform 1500;
     }
 
     wallsZ
