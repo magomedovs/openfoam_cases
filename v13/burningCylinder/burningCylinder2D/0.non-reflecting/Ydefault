@@ -30,20 +30,28 @@ boundaryField
 
     outlet
     {
-        type            zeroGradient;
+        // type            zeroGradient;
 
         // type            waveTransmissive;
         // fieldInf        0;
         // $waveTransmissiveParams;
+
+        type            advective;
+        fieldInf        0;
+        $waveTransmissiveParams;
     }
 
     wallsY
     {
-        type            zeroGradient;
+        // type            zeroGradient;
         
         // type            waveTransmissive;
         // fieldInf        0;
         // $waveTransmissiveParams;
+
+        type            advective;
+        fieldInf        0;
+        $waveTransmissiveParams;
     }
 
     cylinder
