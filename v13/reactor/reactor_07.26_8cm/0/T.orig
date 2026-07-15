@@ -1,0 +1,152 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+// internalField   uniform 298;
+internalField #codeStream
+{
+    code
+    #{        
+        const IOdictionary& d       = static_cast<const IOdictionary&>(dict);
+        const fvMesh&       mesh    = refCast<const fvMesh>(d.db());
+        
+        Info<< "Reading fieldsDict\n" << endl;
+        IOdictionary myCustomDict
+        (
+            IOobject
+            (
+                "fieldsDict",
+                mesh.time().constant(), //"constant",
+                mesh,
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+            )
+        );
+        const dictionary& dataDict = myCustomDict.subDict("TWall");
+        const word fileFormat = dataDict.lookup<word>("format");
+        Info<< "Reading " << fileFormat << " file ...\n" << endl; 
+        
+        autoPtr<Function1<scalar>> InitCondition(Function1<scalar>::New("type", {unitAny, unitAny}, dataDict));
+        // autoPtr<Function1<scalar>> InitCondition(Function1<scalar>::New("type", {dimLength, dimTemperature}, dataDict));
+
+        const scalar z1(0.37774);
+        const scalar z2(0.61);
+        Info<< "Value F("<<z1<<") = " << InitCondition->value(z1) << endl;
+        Info<< "Value F("<<z2<<") = " << InitCondition->value(z2) << endl;
+        
+        scalarField fld(mesh.nCells(), 0);
+        forAll(fld, i)
+        {
+            // const scalar x = mesh.C()[i][0];
+            // const scalar y = mesh.C()[i][1];
+            const scalar z = mesh.C()[i][2];
+            fld[i] = InitCondition->value(z);
+        }
+
+        writeEntry(os, "", fld);
+    #};
+
+    codeInclude
+    #{
+        #include "volFields.H"
+        #include "Function1.H"
+    #};
+
+    codeOptions
+    #{
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+
+    codeLibs
+    #{
+        -lmeshTools \
+        -lfiniteVolume
+    #};
+};
+
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        // value           $internalField;
+        value           uniform #calc "273.15 + 54";
+
+        // type            zeroGradient;
+    }
+
+    outlet
+    {
+
+        // type            waveTransmissive;  // Non-reflective for compressible flow
+        // gamma           1.4;              // Heat capacity ratio (Cp/Cv)
+        // field           T;            // Act on T
+        // value           uniform #calc "273 + 95";        // Reference value 
+        // value           uniform #calc "273 + 25";        // Reference value 
+        
+        // type            advective;
+        // lInf            5;
+        // fieldInf        #calc "273";
+        
+        // type            inletOutlet;
+        // inletValue      uniform #calc "273 + 95";
+        // value           uniform #calc "273 + 95";
+        // inletValue      $internalField;
+        // value           $internalField;
+        // inletValue      uniform #calc "273 + 750";
+        // value           uniform #calc "273 + 750";
+        
+        // type            fixedValue;
+        // value           uniform #calc "273 + 95";
+
+        type            zeroGradient;
+    }
+
+    sideWalls
+    {
+        // type            fixedValue;
+        // value           uniform     298;
+        
+        type            fixedProfile;
+        profile         table;
+        #include "$FOAM_CASE/constant/fieldsDict"
+        $TWall
+        direction        (0 0 1);
+        origin           0;
+
+        // profile
+        // {
+        //     type            table;
+        //     format          csv;        // Input format
+        //     nHeaderLine     0;          // Number of header lines
+        //     columns         (0 1);      // Column indices
+        //     separator       " ";        // Optional (defaults to ",")
+        //     mergeSeparators yes;        // Merge multiple separators
+        //     outOfBounds     clamp;      // Optional out-of-bounds handling
+        //     file            "fieldsData/wallTemperature";
+        //     interpolationScheme linear;     // Optional interpolation scheme
+        // }
+        // direction        (0 0 1);
+        // origin           0;
+    }
+
+}
+
+
+// ************************************************************************* //
