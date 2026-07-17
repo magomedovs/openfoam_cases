@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-volFlowRateLPerMin      1.67; //3.56; //1.;                        // [L / min]
+volFlowRateLPerMin      10.; //3.56; //1.;                        // [L / min]
 reactorRadius           0.04; //0.037;                            // [m]
 
 reactorArea             #calc "$reactorRadius * $reactorRadius * Foam::constant::mathematical::pi";    // [m^2]
@@ -50,15 +50,16 @@ boundaryField
         // field           U;            // Act on U
         // value           $internalField; //uniform (0 0 0);       // Reference value 
 
-        type            inletOutlet;
-        value           uniform (0 0 0);        // ???
-        inletValue      uniform (0 0 0);
+        // type            inletOutlet;
+        // value           uniform (0 0 0);        // ???
+        // inletValue      uniform (0 0 0);
 
         // type            zeroGradient;
 
-        // type                pressureInletOutletVelocity;
+        type                pressureInletOutletVelocity;
         // phi                 phi;
-        // tangentialVelocity  uniform (0 0 0);
+        tangentialVelocity  uniform (0 0 0);
+        value               $internalField;
         // value               uniform (0 0 0);
 
         // type            fixedValue;

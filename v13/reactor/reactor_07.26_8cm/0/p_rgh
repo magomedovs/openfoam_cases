@@ -69,7 +69,7 @@ boundaryField
 
         type            prghTotalPressure;
         p0              $internalField;
-        rho             rho;
+        // rho             rho;
         value           $internalField;
 
         // type               prghTotalHydrostaticPressure;
