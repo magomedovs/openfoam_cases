@@ -124,9 +124,14 @@ boundaryField
         // value           uniform     298;
         
         type            fixedProfile;
-        profile         table;
+        
         #include "$FOAM_CASE/constant/fieldsDict"
-        $TWall
+        
+        profile
+        {
+            $TWall
+        }
+
         direction        (0 0 1);
         origin           0;
 
