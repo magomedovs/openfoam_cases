@@ -1,0 +1,93 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  14
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+// internalField   uniform 298;
+internalField
+{
+    type        distanceFunction;
+    direction   (0 0 1);
+
+    #include "$FOAM_CASE/constant/fieldsDict"
+
+    function
+    {
+        $TWall
+    }
+};
+
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        // value           $internalField;
+        value           uniform #calc "273.15 + 54";
+
+        // type            zeroGradient;
+    }
+
+    outlet
+    {
+
+        // type            waveTransmissive;  // Non-reflective for compressible flow
+        // gamma           1.4;              // Heat capacity ratio (Cp/Cv)
+        // field           T;            // Act on T
+        // value           uniform #calc "273 + 95";        // Reference value 
+        // value           uniform #calc "273 + 25";        // Reference value 
+        
+        // type            advective;
+        // lInf            5;
+        // fieldInf        #calc "273";
+        
+        // type            inletOutlet;
+        // inletValue      uniform #calc "273 + 95";
+        // value           uniform #calc "273 + 95";
+        // inletValue      $internalField;
+        // value           $internalField;
+        // inletValue      uniform #calc "273 + 750";
+        // value           uniform #calc "273 + 750";
+        
+        // type            fixedValue;
+        // value           uniform #calc "273 + 95";
+
+        type            zeroGradient;
+    }
+
+    sideWalls
+    {
+        // type            fixedValue;
+        // value           uniform     298;
+        
+        type            fixedProfile;
+        
+        #include "$FOAM_CASE/constant/fieldsDict"
+        
+        profile
+        {
+            $TWall
+        }
+        
+        direction        (0 0 1);
+        origin           0;
+    }
+
+}
+
+
+// ************************************************************************* //

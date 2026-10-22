@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  14
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+volFlowRateLPerMin      10.; //3.56; //1.;                        // [l / min]
+reactorRadius           0.04; //0.037;                            // [m]
+
+#codeBlock
+#codeInclude "mathematicalConstants.H"
+reactorArea             #calc "$reactorRadius * $reactorRadius * Foam::constant::mathematical::pi";    // [m^2]
+#endCodeBlock
+
+volFlowRate             #calc "$volFlowRateLPerMin * (1e-3 / 60.)";   // [m^3 / s]
+UEstimate               #calc "$volFlowRate / $reactorArea";             // [m / s]
+
+// reactorArea             0.002827;
+// volFlowRate             1.666e-5;
+// UEstimate               0.00589;
+
+internalField   uniform (0 0 #calc "$UEstimate");
+// internalField   uniform (0 0 0.01);
+// internalField   uniform (0 0 0.0059);
+
+boundaryField
+{
+
+    inlet
+    {
+        type                flowRateInletVelocity;
+        volumetricFlowRate  constant $volFlowRate;        // [m^3 / s]
+
+        // type            fixedValue;
+        // value           $internalField; //uniform (0 0 0.0059);
+    }
+
+    outlet
+    {
+        // type            waveTransmissive;  // Non-reflective for compressible flow
+        // gamma           1.4;              // Heat capacity ratio (Cp/Cv)
+        // field           U;            // Act on U
+        // value           $internalField; //uniform (0 0 0);       // Reference value 
+
+        // type            inletOutlet;
+        // value           uniform (0 0 0);        // ???
+        // inletValue      uniform (0 0 0);
+
+        // type            zeroGradient;
+
+        type                pressureInletOutletVelocity;
+        // phi                 phi;
+        tangentialVelocity  uniform (0 0 0);
+        value               $internalField;
+        // value               uniform (0 0 0);
+
+        // type            fixedValue;
+        // value           uniform (0 0 0);
+    }
+
+    sideWalls
+    {
+        type            noSlip;
+        
+        // type            slip;
+
+        // type            fixedValue;
+        // value           uniform (0 0 0);
+    }
+
+}
+
+
+// ************************************************************************* //

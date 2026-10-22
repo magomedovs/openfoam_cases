@@ -1,0 +1,22 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+paraFoam -builtin -touch
+
+# runApplication surfaceAutoPatch constant/geometry/reactor_07.26-Body.stl constant/geometry/reactor_07.26-Body_out.stl 130
+# runApplication surfaceTransformPoints "scale=(0.01 0.01 0.01)" constant/geometry/reactor_07.26-Body_out.stl constant/geometry/reactor_07.26-Body_out_scaled.stl
+### After this one can visualize the geometry object in ParaView and see the patches numbers. Then the ".stl" file can be modified manually and the patches can be named.
+
+runApplication blockMesh
+runApplication surfaceFeatures
+runApplication snappyHexMesh
+# runApplication createPatch
+runApplication checkMesh
+
+# runApplication transformPoints "translate=(0 0 -0.04)"
+
+runApplication foamRun
+
+#------------------------------------------------------------------------------
